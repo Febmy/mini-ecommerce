@@ -1,60 +1,33 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { Link, NavLink } from 'react-router-dom'
+import { useCart } from '../context/CartContext.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
 
-const Navbar = () => {
-  const { user, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
+export default function Navbar() {
+  const { totalQty } = useCart()
+  const { isAuthenticated, email, logout } = useAuth()
   return (
-    <nav className="flex items-center justify-between px-6 py-3 bg-blue-600 text-white">
-      {/* Logo / Brand */}
-      <Link to="/" className="text-xl font-bold">
-        MiniShop
-      </Link>
-
-      {/* Menu */}
-      <div className="flex gap-4">
-        <Link to="/catalog">Catalog</Link>
-        <Link to="/cart">Cart</Link>
-        <Link to="/wishlist">Wishlist</Link>
-        <Link to="/orders">Orders</Link>
-        {user && <Link to="/dashboard">Dashboard</Link>}
-      </div>
-
-      {/* Auth Buttons */}
-      <div>
-        {user ? (
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
-          >
-            Logout
-          </button>
-        ) : (
-          <div className="flex gap-2">
-            <Link
-              to="/login"
-              className="bg-green-500 px-3 py-1 rounded hover:bg-green-600"
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="bg-yellow-500 px-3 py-1 rounded hover:bg-yellow-600"
-            >
-              Register
-            </Link>
-          </div>
-        )}
-      </div>
-    </nav>
-  );
-};
-
-export default Navbar;
+    <header className="border-b bg-white">
+      <nav className="container flex items-center justify-between py-4 gap-4">
+        <Link to="/" className="text-xl font-bold text-sky-700">Mini Project</Link>
+        <div className="flex items-center gap-3">
+          <NavLink to="/products" className={({isActive}) => 'px-3 py-2 rounded hover:bg-gray-100 ' + (isActive ? 'text-sky-700 font-medium' : '')}>Products</NavLink>
+          <NavLink to="/users" className={({isActive}) => 'px-3 py-2 rounded hover:bg-gray-100 ' + (isActive ? 'text-sky-700 font-medium' : '')}>Users</NavLink>
+          <NavLink to="/cart" className={({isActive}) => 'px-3 py-2 rounded hover:bg-gray-100 ' + (isActive ? 'text-sky-700 font-medium' : '')}>
+            Cart <span className="ml-1 inline-flex items-center justify-center text-xs rounded-full bg-sky-600 text-white w-5 h-5 align-middle">{totalQty}</span>
+          </NavLink>
+          {!isAuthenticated ? (
+            <>
+              <NavLink to="/login" className="px-3 py-2 rounded hover:bg-gray-100">Login</NavLink>
+              <NavLink to="/register" className="px-3 py-2 rounded hover:bg-gray-100">Register</NavLink>
+            </>
+          ) : (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600 hidden sm:inline">Hi, {email}</span>
+              <button className="btn btn-outline" onClick={logout}>Logout</button>
+            </div>
+          )}
+        </div>
+      </nav>
+    </header>
+  )
+}

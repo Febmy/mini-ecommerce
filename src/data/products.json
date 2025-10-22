@@ -1,18 +1,50 @@
-{
-  "products": [
-    {
-      "id": 1,
-      "name": "Produk A",
-      "price": 10000,
-      "category": "Makanan",
-      "image": "p1.jpg"
-    },
-    {
-      "id": 2,
-      "name": "Produk B",
-      "price": 20000,
-      "category": "Minuman",
-      "image": "p2.jpg"
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "title": "Sepatu Lari Aero X",
+    "price": 499000,
+    "category": "sepatu",
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+    "description": "Sepatu lari ringan dengan bantalan nyaman untuk aktivitas harian."
+  },
+  {
+    "id": 2,
+    "title": "Tas Ransel Voyager 25L",
+    "price": 359000,
+    "category": "tas",
+    "image": "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1200&auto=format&fit=crop",
+    "description": "Ransel multifungsi untuk kerja, kuliah, dan traveling."
+  },
+  {
+    "id": 3,
+    "title": "Headphone Wireless Nova",
+    "price": 799000,
+    "category": "elektronik",
+    "image": "https://images.unsplash.com/photo-1518441902113-c1d3f3b1d5f3?q=80&w=1200&auto=format&fit=crop",
+    "description": "Audio jernih dengan baterai tahan 30 jam dan mode noise cancelling."
+  },
+  {
+    "id": 4,
+    "title": "Kaos Basic Oversize",
+    "price": 129000,
+    "category": "fashion",
+    "image": "https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1200&auto=format&fit=crop",
+    "description": "Kaos katun 24s lembut, potongan oversize untuk gaya santai."
+  },
+  {
+    "id": 5,
+    "title": "Botol Minum Tritan 1L",
+    "price": 89000,
+    "category": "aksesoris",
+    "image": "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?q=80&w=1200&auto=format&fit=crop",
+    "description": "Botol BPA\u2011free dengan penanda volume dan strap bawa."
+  },
+  {
+    "id": 6,
+    "title": "Jaket Windbreaker Storm",
+    "price": 349000,
+    "category": "fashion",
+    "image": "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop",
+    "description": "Windbreaker ringan tahan angin & gerimis dengan mesh lining."
+  }
+]

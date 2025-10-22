@@ -1,100 +1,36 @@
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom'
+import { useCart } from '../context/CartContext.jsx'
 
-const Cart = () => {
-  const { cartItems, removeFromCart, clearCart, increaseQty, decreaseQty } =
-    useContext(CartContext);
-  const navigate = useNavigate();
-
-  const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
-
-  if (cartItems.length === 0) {
-    return (
-      <div className="p-6 text-center">
-        <h1 className="text-2xl font-bold mb-4">Keranjang Kosong</h1>
-        <Link to="/catalog" className="text-blue-600 underline">
-          Belanja sekarang
-        </Link>
-      </div>
-    );
-  }
-
+export default function Cart() {
+  const { items, setQty, remove, clear, totalPrice } = useCart()
+  if (items.length === 0) return (<section className="text-center py-16 space-y-4"><p className="text-gray-600">Keranjang masih kosong.</p><Link to="/products" className="btn btn-primary">Belanja dulu</Link></section>)
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Keranjang Belanja</h1>
-
+    <section className="space-y-6">
+      <h1 className="text-2xl font-bold">Keranjang</h1>
       <div className="space-y-4">
-        {cartItems.map((item) => (
-          <div
-            key={item.id}
-            className="flex items-center justify-between border-b pb-4"
-          >
-            <div className="flex items-center gap-4">
-              <img
-                src={`/assets/images/${item.image}`}
-                alt={item.name}
-                className="w-20 h-20 object-cover rounded"
-              />
-              <div>
-                <h2 className="font-semibold">{item.name}</h2>
-                <p className="text-gray-600">Rp{item.price.toLocaleString()}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <button
-                    onClick={() => decreaseQty(item.id)}
-                    className="px-2 py-1 bg-gray-200 rounded"
-                  >
-                    -
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button
-                    onClick={() => increaseQty(item.id)}
-                    className="px-2 py-1 bg-gray-200 rounded"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
+        {items.map(it => (
+          <div key={it.id} className="flex gap-4 items-center border rounded-xl bg-white p-3">
+            <img src={it.image} alt={it.title} className="w-20 h-20 object-cover rounded-md" />
+            <div className="flex-1">
+              <p className="font-medium">{it.title}</p>
+              <p className="text-sm text-gray-500">Rp {it.price.toLocaleString('id-ID')}</p>
             </div>
-            <div className="flex flex-col items-end">
-              <p className="text-blue-600 font-bold mb-2">
-                Rp{(item.price * item.quantity).toLocaleString()}
-              </p>
-              <button
-                onClick={() => removeFromCart(item.id)}
-                className="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700"
-              >
-                Hapus
-              </button>
+            <div className="flex items-center gap-2">
+              <button className="px-3 py-1 rounded border" onClick={() => setQty(it.id, it.qty - 1)}>-</button>
+              <input className="w-14 text-center rounded border px-2 py-1" type="number" min="1" value={it.qty} onChange={e => setQty(it.id, Number(e.target.value) || 1)} />
+              <button className="px-3 py-1 rounded border" onClick={() => setQty(it.id, it.qty + 1)}>+</button>
             </div>
+            <button className="btn btn-outline" onClick={() => remove(it.id)}>Hapus</button>
           </div>
         ))}
       </div>
-
-      <div className="mt-6 flex justify-between items-center">
-        <h2 className="text-xl font-bold">
-          Total: Rp{totalPrice.toLocaleString()}
-        </h2>
-        <div className="flex gap-4">
-          <button
-            onClick={clearCart}
-            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
-          >
-            Kosongkan
-          </button>
-          <button
-            onClick={() => navigate("/checkout")}
-            className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
-          >
-            Checkout
-          </button>
+      <div className="flex items-center justify-between border-t pt-4">
+        <span className="text-lg font-semibold">Total: Rp {totalPrice.toLocaleString('id-ID')}</span>
+        <div className="flex gap-2">
+          <button className="btn btn-outline" onClick={clear}>Kosongkan</button>
+          <button className="btn btn-primary" onClick={() => alert('Checkout berhasil (dummy)!')}>Checkout</button>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default Cart;
+    </section>
+  )
+}

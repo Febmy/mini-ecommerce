@@ -1,59 +1,27 @@
-import { createContext, useState } from "react";
-
-export const CartContext = createContext();
-
-export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
-
-  const addToCart = (product) => {
-    setCartItems((prev) => {
-      const exists = prev.find((item) => item.id === product.id);
-      return exists
-        ? prev.map((item) =>
-            item.id === product.id
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          )
-        : [...prev, { ...product, quantity: 1 }];
-    });
-  };
-
-  const removeFromCart = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const clearCart = () => setCartItems([]);
-
-  const increaseQty = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
-
-  const decreaseQty = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
-  };
-
-  return (
-    <CartContext.Provider
-      value={{
-        cartItems,
-        addToCart,
-        removeFromCart,
-        clearCart,
-        increaseQty,
-        decreaseQty,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
-  );
-};
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { useLocalStorage } from '../hooks/useLocalStorage.js'
+const CartCtx = createContext(null)
+export function CartProvider({ children }) {
+  const [stored, setStored] = useLocalStorage('cart', [])
+  const [items, setItems] = useState(stored)
+  useEffect(() => { setStored(items) }, [items, setStored])
+  const totalQty = useMemo(() => items.reduce((a, i) => a + i.qty, 0), [items])
+  const totalPrice = useMemo(() => items.reduce((a, i) => a + i.price * i.qty, 0), [items])
+  const add = (product, qty = 1) => {
+    setItems(prev => {
+      const exist = prev.find(p => p.id === product.id)
+      if (exist) return prev.map(p => p.id === product.id ? { ...p, qty: p.qty + qty } : p)
+      return [...prev, { ...product, qty }]
+    })
+  }
+  const remove = (id) => setItems(prev => prev.filter(p => p.id !== id))
+  const setQty = (id, qty) => setItems(prev => prev.map(p => p.id === id ? { ...p, qty: Math.max(1, qty) } : p))
+  const clear = () => setItems([])
+  const value = { items, add, remove, setQty, clear, totalQty, totalPrice }
+  return <CartCtx.Provider value={value}>{children}</CartCtx.Provider>
+}
+export const useCart = () => {
+  const ctx = useContext(CartCtx)
+  if (!ctx) throw new Error('useCart must be used within CartProvider')
+  return ctx
+}

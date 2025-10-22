@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+/* Tell Tailwind where to scan (v4) */
+@source "./index.html";
+@source "./src/**/*.{js,jsx,ts,tsx}";
+
+/* Optional: theme tokens (v4) */
+@theme {
+  --brand: #0ea5e9; /* sky-500 */
+}
+
+/* Example utilities using @apply (still supported) */
+.btn {
+  @apply inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium transition;
+}
+.btn-primary { @apply bg-sky-600 text-white hover:bg-sky-700; }
+.btn-outline { @apply border-sky-600 text-sky-700 hover:bg-sky-50; }

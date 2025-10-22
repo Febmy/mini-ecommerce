@@ -1,16 +1,28 @@
-# React + Vite
+# Mini Project React — Reqres + Tailwind 4.1 + Axios
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Mengimplementasikan **guidance**: Auth (Login/Register), List Users + Detail (Reqres), **pagination**, **Protected Routes**, responsive design, React Hooks, axios.
 
-Currently, two official plugins are available:
+## Endpoint yang dipakai (Reqres)
+- **REGISTER - SUCCESSFUL / UNSUCCESSFUL** → `POST /register`
+- **LOGIN - SUCCESSFUL / UNSUCCESSFUL** → `POST /login`
+- **LIST USERS** → `GET /users?page=1..n`
+- **SINGLE USER** → `GET /users/:id`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Cara jalan
+```bash
+npm install
+npm run dev
+```
+Buka `http://localhost:5173`.
 
-## React Compiler
+## Akun contoh
+- Login sukses: `eve.holt@reqres.in` + `cityslicka`
+- Register sukses: `eve.holt@reqres.in` + `pistol`
+- Untuk skenario gagal: kosongkan password → API akan mengembalikan error.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech
+- React 18, Vite 5
+- Tailwind **4.1** (config CJS untuk kompatibilitas)
+- React Router v6
+- Axios (services/reqres.js)
+- Context API + Hooks (Auth, Cart)

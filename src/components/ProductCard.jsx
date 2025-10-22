@@ -1,45 +1,20 @@
-import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { WishlistContext } from "../context/WishlistContext";
+import { Link } from 'react-router-dom'
+import { useCart } from '../context/CartContext.jsx'
 
-const ProductCard = ({ product }) => {
-  const { wishlist, addToWishlist, removeFromWishlist } =
-    useContext(WishlistContext);
-  const isInWishlist = wishlist.some((item) => item.id === product.id);
-
-  const toggleWishlist = () => {
-    if (isInWishlist) {
-      removeFromWishlist(product.id);
-    } else {
-      addToWishlist(product);
-    }
-  };
-
+export default function ProductCard({ product }) {
+  const { add } = useCart()
   return (
-    <div className="border rounded shadow hover:shadow-lg transition p-4 relative">
-      <button
-        onClick={toggleWishlist}
-        className={`absolute top-2 right-2 border rounded-full p-2 ${
-          isInWishlist ? "bg-red-500 text-white" : "bg-white hover:bg-gray-100"
-        }`}
-        title={isInWishlist ? "Hapus dari Wishlist" : "Tambah ke Wishlist"}
-      >
-        ❤️
-      </button>
-      <Link to={`/product/${product.id}`}>
-        <img
-          src={`/assets/images/${product.image}`}
-          alt={product.name}
-          className="w-full h-48 object-cover mb-4 rounded"
-        />
-        <h2 className="text-lg font-semibold">{product.name}</h2>
-        <p className="text-sm text-gray-600">{product.category}</p>
-        <p className="text-blue-600 font-bold mt-2">
-          Rp{product.price.toLocaleString()}
-        </p>
+    <div className="rounded-xl border bg-white overflow-hidden hover:shadow-md transition">
+      <Link to={`/products/${product.id}`}>
+        <img src={product.image} alt={product.title} className="h-44 w-full object-cover" loading="lazy" />
       </Link>
+      <div className="p-4 space-y-2">
+        <Link to={`/products/${product.id}`} className="font-medium line-clamp-2 hover:underline">{product.title}</Link>
+        <div className="flex items-center justify-between">
+          <span className="font-semibold">Rp {product.price.toLocaleString('id-ID')}</span>
+          <button className="btn btn-primary" onClick={() => add(product, 1)}>Add</button>
+        </div>
+      </div>
     </div>
-  );
-};
-
-export default ProductCard;
+  )
+}

@@ -1,64 +1,41 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext.jsx'
 
-const Login = () => {
-  const { login } = useContext(AuthContext);
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+export default function Login() {
+  const { login, loading, error, isAuthenticated } = useAuth()
+  const [email, setEmail] = useState('eve.holt@reqres.in')
+  const [password, setPassword] = useState('cityslicka')
+  const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || '/users'
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("https://reqres.in/api/login", form);
-      login(res.data.token); // simpan token ke context/localStorage
-      navigate("/dashboard");
-    } catch (err) {
-      console.error(err.response?.data);
-      setError("Login gagal, gunakan email & password yang valid");
-    }
-  };
+  useEffect(() => {
+    if (isAuthenticated) navigate(from, { replace: true })
+  }, [isAuthenticated, navigate, from])
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    const res = await login({ email, password })
+    if (res.ok) navigate(from, { replace: true })
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow p-6 rounded w-80"
-      >
-        <h1 className="text-xl font-bold mb-4">Login</h1>
-        {error && <p className="text-red-600 mb-2">{error}</p>}
-
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full border px-3 py-2 mb-3 rounded"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          required
-          autoComplete="username"
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full border px-3 py-2 mb-3 rounded"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-          required
-          autoComplete="current-password"
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Login
-        </button>
+    <section className="max-w-md mx-auto bg-white border rounded-xl p-6 space-y-4">
+      <h1 className="text-2xl font-bold">Login</h1>
+      <form onSubmit={onSubmit} className="space-y-3">
+        <div>
+          <label className="block text-sm mb-1">Email</label>
+          <input className="w-full rounded border px-3 py-2" value={email} onChange={e=>setEmail(e.target.value)} placeholder="eve.holt@reqres.in" />
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Password</label>
+          <input type="password" className="w-full rounded border px-3 py-2" value={password} onChange={e=>setPassword(e.target.value)} placeholder="cityslicka" />
+        </div>
+        {error && <p className="text-sm text-red-600">{error}</p>}
+        <button disabled={loading} className="btn btn-primary w-full">{loading ? 'Memproses...' : 'Masuk'}</button>
       </form>
-    </div>
-  );
-};
-
-export default Login;
+      <p className="text-sm text-gray-600">Coba skenario gagal: kosongkan password → akan mengembalikan error (LOGIN - UNSUCCESSFUL).</p>
+    </section>
+  )
+}

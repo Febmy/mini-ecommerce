@@ -1,68 +1,39 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext.jsx'
 
-const Register = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const navigate = useNavigate();
+export default function Register() {
+  const { register, loading, error, isAuthenticated } = useAuth()
+  const [email, setEmail] = useState('eve.holt@reqres.in')
+  const [password, setPassword] = useState('pistol')
+  const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // Reqres API untuk register
-      const res = await axios.post("https://reqres.in/api/register", form);
-      console.log(res.data); // { id: 4, token: "QpwL5tke4Pnpja7X4" }
-      setSuccess("Registrasi berhasil! Silakan login.");
-      setError("");
-      setTimeout(() => navigate("/login"), 1500);
-    } catch (err) {
-      console.error(err.response?.data);
-      setError("Registrasi gagal, gunakan email & password yang valid");
-      setSuccess("");
-    }
-  };
+  useEffect(() => {
+    if (isAuthenticated) navigate('/users', { replace: true })
+  }, [isAuthenticated, navigate])
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    const res = await register({ email, password })
+    if (res.ok) navigate('/users', { replace: true })
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow p-6 rounded w-80"
-      >
-        <h1 className="text-xl font-bold mb-4">Register</h1>
-        {error && <p className="text-red-600 mb-2">{error}</p>}
-        {success && <p className="text-green-600 mb-2">{success}</p>}
-
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full border px-3 py-2 mb-3 rounded"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          required
-          autoComplete="username"
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full border px-3 py-2 mb-3 rounded"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-          required
-          autoComplete="new-password"
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
-        >
-          Register
-        </button>
+    <section className="max-w-md mx-auto bg-white border rounded-xl p-6 space-y-4">
+      <h1 className="text-2xl font-bold">Register</h1>
+      <form onSubmit={onSubmit} className="space-y-3">
+        <div>
+          <label className="block text-sm mb-1">Email</label>
+          <input className="w-full rounded border px-3 py-2" value={email} onChange={e=>setEmail(e.target.value)} placeholder="eve.holt@reqres.in" />
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Password</label>
+          <input type="password" className="w-full rounded border px-3 py-2" value={password} onChange={e=>setPassword(e.target.value)} placeholder="pistol" />
+        </div>
+        {error && <p className="text-sm text-red-600">{error}</p>}
+        <button disabled={loading} className="btn btn-primary w-full">{loading ? 'Memproses...' : 'Daftar'}</button>
       </form>
-    </div>
-  );
-};
-
-export default Register;
+      <p className="text-sm text-gray-600">Coba skenario gagal: hapus password → akan error (REGISTER - UNSUCCESSFUL).</p>
+    </section>
+  )
+}
