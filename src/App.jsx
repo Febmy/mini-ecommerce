@@ -20,19 +20,17 @@ export default function App() {
       <CartProvider>
         <div className="min-h-screen flex flex-col">
           <Navbar />
-          <main className="flex-1 container py-6">
+          <main className="flex-1 container py-8">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
 
-              {/* Protected routes */}
               <Route element={<ProtectedRoute />}>
                 <Route path="/users" element={<Users />} />
                 <Route path="/users/:id" element={<UserDetail />} />
               </Route>
 
-              {/* E-commerce demo */}
               <Route path="/products" element={<Products />} />
               <Route path="/products/:id" element={<ProductDetail />} />
               <Route path="/cart" element={<Cart />} />

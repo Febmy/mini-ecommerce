@@ -1,21 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* --- Base typography & layout tweaks --- */
-@layer base {
-  html, body, #root { height: 100%; }
-  body { @apply bg-gray-50 text-gray-900; }
-  h1, h2, h3 { @apply tracking-tight; }
+@source "./index.html";
+@source "./src/**/*.{js,jsx,ts,tsx}";
+
+/* utilitas kecil */
+.btn {
+  @apply inline-flex items-center justify-center rounded-lg border border-transparent px-4 py-2 text-sm font-medium transition;
+}
+.btn-primary {
+  @apply bg-sky-600 text-white hover:bg-sky-700;
+}
+.btn-outline {
+  @apply border-sky-600 text-sky-700 hover:bg-sky-50;
 }
 
-@layer components {
-  .btn { @apply inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium transition; }
-  .btn-primary { @apply bg-sky-600 text-white hover:bg-sky-700; }
-  .btn-outline { @apply border-sky-600 text-sky-700 hover:bg-sky-50; }
-  .card { @apply rounded-xl border bg-white p-4 shadow-sm; }
+html,
+body,
+#root {
+  height: 100%;
 }
-
-@layer utilities {
-  .container-narrow { @apply max-w-5xl mx-auto; }
+body {
+  @apply bg-gray-50 text-gray-900 antialiased;
 }

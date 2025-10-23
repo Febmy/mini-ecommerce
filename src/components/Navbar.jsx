@@ -1,33 +1,53 @@
-import { Link, NavLink } from 'react-router-dom'
-import { useCart } from '../context/CartContext.jsx'
-import { useAuth } from '../context/AuthContext.jsx'
+import { Link, NavLink } from "react-router-dom";
+import { useCart } from "../context/CartContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Navbar() {
-  const { totalQty } = useCart()
-  const { isAuthenticated, email, logout } = useAuth()
+  const { totalQty } = useCart();
+  const { isAuthenticated, email, logout } = useAuth();
+  const linkClass = ({ isActive }) =>
+    "navlink " + (isActive ? "navlink-active" : "");
+
   return (
-    <header className="border-b bg-white">
+    <header className="border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 sticky top-0 z-50">
       <nav className="container flex items-center justify-between py-4 gap-4">
-        <Link to="/" className="text-xl font-bold text-sky-700">Mini Project</Link>
-        <div className="flex items-center gap-3">
-          <NavLink to="/products" className={({isActive}) => 'px-3 py-2 rounded hover:bg-gray-100 ' + (isActive ? 'text-sky-700 font-medium' : '')}>Products</NavLink>
-          <NavLink to="/users" className={({isActive}) => 'px-3 py-2 rounded hover:bg-gray-100 ' + (isActive ? 'text-sky-700 font-medium' : '')}>Users</NavLink>
-          <NavLink to="/cart" className={({isActive}) => 'px-3 py-2 rounded hover:bg-gray-100 ' + (isActive ? 'text-sky-700 font-medium' : '')}>
-            Cart <span className="ml-1 inline-flex items-center justify-center text-xs rounded-full bg-sky-600 text-white w-5 h-5 align-middle">{totalQty}</span>
+        <Link to="/" className="text-xl sm:text-2xl font-bold text-sky-700">
+          Mini Shop
+        </Link>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <NavLink to="/products" className={linkClass}>
+            Produk
+          </NavLink>
+          <NavLink to="/users" className={linkClass}>
+            Users
+          </NavLink>
+          <NavLink to="/cart" className={linkClass}>
+            Keranjang
+            <span className="ml-2 inline-flex items-center justify-center text-[10px] font-semibold rounded-full bg-sky-600 text-white w-5 h-5 align-middle">
+              {totalQty}
+            </span>
           </NavLink>
           {!isAuthenticated ? (
             <>
-              <NavLink to="/login" className="px-3 py-2 rounded hover:bg-gray-100">Login</NavLink>
-              <NavLink to="/register" className="px-3 py-2 rounded hover:bg-gray-100">Register</NavLink>
+              <NavLink to="/login" className={linkClass}>
+                Masuk
+              </NavLink>
+              <NavLink to="/register" className={linkClass}>
+                Daftar
+              </NavLink>
             </>
           ) : (
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600 hidden sm:inline">Hi, {email}</span>
-              <button className="btn btn-outline" onClick={logout}>Logout</button>
+              <span className="hidden sm:inline text-sm text-gray-600">
+                Hai, {email}
+              </span>
+              <button className="btn btn-outline" onClick={logout}>
+                Keluar
+              </button>
             </div>
           )}
         </div>
       </nav>
     </header>
-  )
+  );
 }

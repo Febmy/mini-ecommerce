@@ -18,11 +18,13 @@ export default function Users() {
   useEffect(() => {
     let ignore = false
     setLoading(true); setError('')
-    fetchUsers(page).then(({ data }) => {
-      if (ignore) return
-      setUsers(data?.data || [])
-      setTotalPages(data?.total_pages || 1)
-    }).catch(e => setError(e?.message || 'Gagal memuat users'))
+    fetchUsers(page)
+      .then(({ data }) => {
+        if (ignore) return
+        setUsers(data?.data || [])
+        setTotalPages(data?.total_pages || 1)
+      })
+      .catch(e => setError(e?.message || 'Gagal memuat users'))
       .finally(() => setLoading(false))
     return () => { ignore = true }
   }, [page])
@@ -45,7 +47,7 @@ export default function Users() {
       {!loading && !error && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {users.map(u => (
-            <Link key={u.id} to={`/users/${u.id}`} className="border bg-white rounded-xl p-4 flex gap-4 items-center hover:shadow transition">
+            <Link key={u.id} to={`/users/${u.id}`} className="card flex gap-4 items-center hover:shadow transition">
               <img src={u.avatar} alt={u.first_name} className="w-16 h-16 rounded-full object-cover" />
               <div>
                 <p className="font-medium">{u.first_name} {u.last_name}</p>

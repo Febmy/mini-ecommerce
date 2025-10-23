@@ -13,7 +13,9 @@ export default function Products() {
   }, [])
 
   const categories = useMemo(() => ['all', ...Array.from(new Set(products.map(p => p.category)))], [products])
-  const filtered = useMemo(() => products.filter(p => (category==='all'||p.category===category) && p.title.toLowerCase().includes(q.toLowerCase())), [products, q, category])
+  const filtered = useMemo(() =>
+    products.filter(p => (category==='all'||p.category===category) && p.title.toLowerCase().includes(q.toLowerCase()))
+  , [products, q, category])
 
   return (
     <section className="space-y-6">

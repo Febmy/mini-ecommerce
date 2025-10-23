@@ -48,9 +48,7 @@ export function AuthProvider({ children }) {
     }
   }
 
-  const logout = () => {
-    setToken(''); setEmail('')
-  }
+  const logout = () => { setToken(''); setEmail('') }
 
   const value = useMemo(() => ({
     token, email, isAuthenticated, loading, error, login, register, logout

@@ -11,10 +11,9 @@ export default function UserDetail() {
   useEffect(() => {
     let ignore = false
     setLoading(true); setError('')
-    fetchUser(id).then(({ data }) => {
-      if (ignore) return
-      setUser(data?.data || null)
-    }).catch(e => setError(e?.message || 'Gagal memuat user'))
+    fetchUser(id)
+      .then(({ data }) => { if (!ignore) setUser(data?.data || null) })
+      .catch(e => setError(e?.message || 'Gagal memuat user'))
       .finally(() => setLoading(false))
     return () => { ignore = true }
   }, [id])
@@ -24,7 +23,7 @@ export default function UserDetail() {
   if (!user) return <div className="space-y-3"><p className="text-red-600">User tidak ditemukan.</p><Link to="/users" className="text-sky-700 underline">Kembali</Link></div>
 
   return (
-    <section className="max-w-2xl mx-auto bg-white border rounded-xl p-6 grid md:grid-cols-2 gap-6">
+    <section className="max-w-2xl mx-auto card grid md:grid-cols-2 gap-6">
       <img src={user.avatar} alt={user.first_name} className="w-full h-60 object-cover rounded-xl" />
       <div className="space-y-2">
         <h1 className="text-2xl font-bold">{user.first_name} {user.last_name}</h1>
