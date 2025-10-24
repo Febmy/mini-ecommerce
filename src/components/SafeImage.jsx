@@ -1,33 +1,28 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState, useMemo } from 'react'
 
-function normalize(src) {
-  if (!src) return ''
-  let s = String(src).trim()
+const FALLBACK =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(`
+  <svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'>
+    <rect width='100%' height='100%' fill='#f3f4f6'/>
+    <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+          fill='#9ca3af' font-family='sans-serif' font-size='24'>
+      Image unavailable
+    </text>
+  </svg>`)
 
-  // Strip surrounding quotes if any (defensive for CSV cases)
-  if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
-    s = s.slice(1, -1)
-  }
-
-  // http -> https
-  if (/^http:\/\//i.test(s)) s = s.replace(/^http:/i, 'https:')
-  // protocol-relative -> https
-  if (/^\/\//.test(s)) s = 'https:' + s
-
-  // If not data/blob/http(s), treat as path under /images (public)
-  if (!/^data:|^blob:|^https?:\/\//i.test(s)) {
-    if (s.startsWith('/')) return s
-    s = '/images/' + s
-  }
-  return s
-}
-
-export default function SafeImage({ src, alt, className, placeholder = '/images/placeholder.svg' }) {
-  const [failed, setFailed] = useState(false)
-  const url = useMemo(() => normalize(src), [src])
-
-  if (failed || !url) {
-    return <img src={placeholder} alt={alt || 'placeholder'} className={className} loading="lazy" />
-  }
-  return <img src={url} alt={alt} className={className} onError={() => setFailed(true)} loading="lazy" />
+export default function SafeImage({ src, alt = '', className = '', fallback = FALLBACK, ...rest }){
+  const [err, setErr] = useState(false)
+  const finalSrc = useMemo(() => (err ? fallback : src), [err, fallback, src])
+  return (
+    <img
+      src={finalSrc}
+      alt={alt}
+      className={className}
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      onError={() => setErr(true)}
+      {...rest}
+    />
+  )
 }
