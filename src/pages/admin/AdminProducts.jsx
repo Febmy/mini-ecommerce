@@ -160,10 +160,10 @@ export default function AdminProducts() {
         <div className="flex flex-wrap gap-2">
           <Link to="/products" className="px-3 py-2 rounded-2xl border text-sm">Lihat Katalog</Link>
           <Link to="/admin/fix-images" className="px-3 py-2 rounded-2xl border text-sm">Perbaiki Gambar Bawaan</Link>
-          <Link to="/admin/merge-overrides" className="px-3 py-2 rounded-2xl border text-sm">Merge Overrides → JSON</Link>
-          <button onClick={exportCSV} className="px-3 py-2 rounded-2xl border text-sm">Export CSV</button>
-          <button onClick={downloadTemplate} className="px-3 py-2 rounded-2xl border text-sm">Download Template</button>
-          <label className="px-3 py-2 rounded-2xl border text-sm cursor-pointer">
+          <Link to="/admin/merge-overrides" className="hidden px-3 py-2 rounded-2xl border text-sm">Merge Overrides → JSON</Link>
+          <button onClick={exportCSV} className="hidden px-3 py-2 rounded-2xl border text-sm">Export CSV</button>
+          <button onClick={downloadTemplate} className="hidden px-3 py-2 rounded-2xl border text-sm">Download Template</button>
+          <label className="hidden px-3 py-2 rounded-2xl border text-sm cursor-pointer">
             Import CSV
             <input ref={fileRef} type="file" accept=".csv,text/csv" onChange={importCSV} className="hidden" />
           </label>
