@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getAllProducts } from '../utils/products'
 import ProductCard from '../components/ProductCard.jsx'
+import SimplePagination from '../components/SimplePagination.jsx'
+
 export default function Home(){
   const all = getAllProducts()
   const bestSellers = (all.filter(p => p.featured) || all).slice(0, 4)
+
+  // === New: pagination for Home products section ===
+  const PER_PAGE = 8
+  const [page, setPage] = useState(1)
+  const visible = all // ganti jika ingin filter/search tertentu
+  const totalPages = Math.max(1, Math.ceil(visible.length / PER_PAGE))
+  const start = (page - 1) * PER_PAGE
+  const current = useMemo(() => visible.slice(start, start + PER_PAGE), [visible, start])
+
+  // Jika nanti ada search/sort/filter, reset page saat berubah:
+  // useEffect(() => { setPage(1) }, [query, selectedCategories, sort])
+
   return (
     <div className="space-y-16">
       <section className="grid lg:grid-cols-2 gap-8 items-center">
@@ -88,6 +102,33 @@ export default function Home(){
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {bestSellers.map(p => <ProductCard key={p.id} product={p} />)}
         </div>
+      </section>
+
+      {/* === New: Paginated product section on Home === */}
+      <section className="container space-y-6" id="products">
+        <div className="flex items-end justify-between">
+          <h2 className="text-2xl font-bold">Browse Products</h2>
+          <span className="text-sm text-gray-600">Total {visible.length} produk</span>
+        </div>
+
+        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="products-grid">
+          {current.map(p => (
+            <li key={p.id} className="rounded-2xl border bg-white p-4">
+              <ProductCard product={p} />
+            </li>
+          ))}
+        </ul>
+
+        <SimplePagination
+          className="mt-2"
+          page={page}
+          totalPages={totalPages}
+          onChange={(p) => {
+            setPage(p)
+            const el = document.getElementById('products-grid')
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }}
+        />
       </section>
 
       <section className="container">
