@@ -1,31 +1,20 @@
-import { createContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from 'react'
+const Ctx = createContext(null)
+const KEY = 'wishlist_v1'
 
-export const WishlistContext = createContext();
+export function WishlistProvider({ children }) {
+  const [ids, setIds] = useState([])
+  useEffect(() => {
+    try { setIds(JSON.parse(localStorage.getItem(KEY) || '[]')) } catch {}
+  }, [])
+  useEffect(() => {
+    localStorage.setItem(KEY, JSON.stringify(ids))
+  }, [ids])
 
-export const WishlistProvider = ({ children }) => {
-  const [wishlist, setWishlist] = useState(
-    JSON.parse(localStorage.getItem("wishlist")) || []
-  );
+  const toggle = (id) => setIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
+  const has = (id) => ids.includes(id)
+  const clear = () => setIds([])
 
-  const addToWishlist = (product) => {
-    if (!wishlist.find((item) => item.id === product.id)) {
-      const updated = [...wishlist, product];
-      setWishlist(updated);
-      localStorage.setItem("wishlist", JSON.stringify(updated));
-    }
-  };
-
-  const removeFromWishlist = (id) => {
-    const updated = wishlist.filter((item) => item.id !== id);
-    setWishlist(updated);
-    localStorage.setItem("wishlist", JSON.stringify(updated));
-  };
-
-  return (
-    <WishlistContext.Provider
-      value={{ wishlist, addToWishlist, removeFromWishlist }}
-    >
-      {children}
-    </WishlistContext.Provider>
-  );
-};
+  return <Ctx.Provider value={{ ids, toggle, has, clear }}>{children}</Ctx.Provider>
+}
+export const useWishlist = () => useContext(Ctx)

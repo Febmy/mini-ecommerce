@@ -1,21 +1,26 @@
+import React from 'react'
 import { useParams, Link } from 'react-router-dom'
-import productsData from '../data/products.json'
+import { getAllProducts } from '../utils/products'
 import { useCart } from '../context/CartContext.jsx'
+import SmartImage from '../components/SmartImage.jsx'
 
-export default function ProductDetail() {
+export default function ProductDetail(){
   const { id } = useParams()
-  const product = productsData.find(p => String(p.id) === String(id))
   const { add } = useCart()
-  if (!product) return <div className="space-y-3"><p className="text-red-600 font-medium">Produk tidak ditemukan.</p><Link to="/products" className="text-sky-700 underline">Kembali</Link></div>
+  const product = getAllProducts().find(p => p.id === Number(id))
+  if(!product) return <p>Produk tidak ditemukan.</p>
   return (
-    <section className="grid md:grid-cols-2 gap-6">
-      <img src={product.image} alt={product.title} className="w-full h-80 object-cover rounded-xl bg-white border" />
+    <div className="grid lg:grid-cols-2 gap-6">
+      <SmartImage src={product.image} alt={product.title} className="rounded-2xl w-full object-cover"/>
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold">{product.title}</h1>
-        <p className="text-gray-600">{product.description}</p>
-        <div className="text-xl font-semibold">Rp {product.price.toLocaleString('id-ID')}</div>
-        <button className="btn btn-primary" onClick={() => add(product, 1)}>Tambah ke Keranjang</button>
+        <h1 className="text-3xl font-bold">{product.title}</h1>
+        <p className="text-gray-600">{product.category}</p>
+        <p className="text-2xl font-bold">Rp{Number(product.price||0).toLocaleString('id-ID')}</p>
+        <div className="flex gap-3">
+          <button onClick={()=>add(product)} className="px-4 py-2 rounded-2xl bg-brand text-white">Tambah ke Cart</button>
+          <Link to="/products" className="px-4 py-2 rounded-2xl border">Kembali</Link>
+        </div>
       </div>
-    </section>
+    </div>
   )
 }

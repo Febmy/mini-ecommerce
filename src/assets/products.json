@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "title": "Sneakers Runner X",
+    "price": 499000,
+    "category": "Shoes",
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop"
+  },
+  {
+    "id": 2,
+    "title": "Backpack Pro 25L",
+    "price": 399000,
+    "category": "Bags",
+    "image": "https://images.unsplash.com/photo-1504274066651-8d31a536b11a?q=80&w=1200&auto=format&fit=crop"
+  },
+  {
+    "id": 3,
+    "title": "Headphone Wireless Z",
+    "price": 899000,
+    "category": "Audio",
+    "image": "https://images.unsplash.com/photo-1518441902110-66f48f0eac3a?q=80&w=1200&auto=format&fit=crop"
+  },
+  {
+    "id": 4,
+    "title": "Smart Watch S",
+    "price": 1299000,
+    "category": "Wearables",
+    "image": "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?q=80&w=1200&auto=format&fit=crop"
+  },
+  {
+    "id": 5,
+    "title": "Hoodie Cotton 450GSM",
+    "price": 299000,
+    "category": "Apparel",
+    "image": "https://images.unsplash.com/photo-1512437015053-04d83a7a2b2b?q=80&w=1200&auto=format&fit=crop"
+  },
+  {
+    "id": 6,
+    "title": "Mechanical Keyboard 75%",
+    "price": 1199000,
+    "category": "Peripherals",
+    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop"
+  }
+]
