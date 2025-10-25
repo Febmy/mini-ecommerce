@@ -34,14 +34,18 @@ export default function Users() {
         if (alive) setLoading(false);
       }
     })();
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+    };
   }, [page]);
 
   return (
     <section className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">Users</h1>
-        <div className="text-sm text-gray-600">Page {page} / {totalPages}</div>
+        <div className="text-sm text-gray-600">
+          Page {page} / {totalPages}
+        </div>
       </div>
 
       {err && (
@@ -64,15 +68,28 @@ export default function Users() {
         <>
           <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {data.map((u) => (
-              <li key={u.id} className="rounded-2xl border bg-white p-4 hover:shadow-sm transition">
+              <li
+                key={u.id}
+                className="rounded-2xl border bg-white p-4 hover:shadow-sm transition"
+              >
                 <div className="aspect-square rounded-xl overflow-hidden mb-3">
-                  <img src={u.avatar} alt={u.first_name} className="w-full h-full object-cover" referrerPolicy="no-referrer"/>
+                  <img
+                    src={u.avatar}
+                    alt={u.first_name}
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
-                <div className="font-medium">{u.first_name} {u.last_name}</div>
+                <div className="font-medium">
+                  {u.first_name} {u.last_name}
+                </div>
                 <div className="text-sm text-gray-600 truncate">{u.email}</div>
                 <div className="mt-3">
                   {/* NOTE: detail path in your repo is /user/:id (singular) */}
-                  <Link to={`/user/${u.id}`} className="inline-block px-3 py-1.5 rounded-xl border text-sm hover:bg-gray-50">
+                  <Link
+                    to={`/users/${u.id}`}
+                    className="inline-block px-3 py-1.5 rounded-xl border text-sm hover:bg-gray-50"
+                  >
                     Detail
                   </Link>
                 </div>

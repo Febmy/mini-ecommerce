@@ -100,7 +100,7 @@ export default function UserDetail() {
           {/* Header profile */}
           <div className="flex items-center gap-4">
             {/* Blue-themed ring */}
-            <div className="p-[2px] rounded-full bg-gradient-to-tr from-sky-500 via-blue-500 to-indigo-500">
+            <div className="p-[2px] rounded-full bg-gradient-to-tr from-[hsl(197,100%)] via-[hsl(210,100%)] to-[hsl(270,100%)]">
               <img
                 src={user.avatar}
                 alt={user.first_name}
@@ -335,3 +335,5 @@ function makeWishlist(seed) {
   }
   return arr;
 }
+
+
