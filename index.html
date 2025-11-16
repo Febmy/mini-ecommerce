@@ -1,14 +1,39 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mini E‑commerce</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mini E-Commerce — React</title>
+    <meta
+      name="description"
+      content="Mini e-commerce latihan React: katalog produk, pencarian & sortir, login demo. Cepat, aksesibel, dan SEO-friendly."
+    />
+    <meta name="theme-color" content="#0ea5e9" />
+
+    <!-- (OPSIONAL) Canonical: ganti ke URL produksi kamu -->
+    <!-- <link rel="canonical" href="https://namadomainkamu.com/" /> -->
+
+    <!-- (HAPUS kalau tidak pakai Google Fonts di proyek ini) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- PWA manifest (membantu Best Practices/SEO ikon) -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- PRELOAD LCP: ganti path sesuai hero kamu & pastikan file-nya ADA -->
+    <!-- TODO: sediakan /public/images/hero@640.webp, @960.webp, @1280.webp -->
   </head>
-  <body class="bg-gray-50">
+  <body>
+    <!-- Skip link untuk aksesibilitas -->
+    <a
+      href="#content"
+      class="sr-only focus:not-sr-only focus-visible:ring-2 focus-visible:ring-sky-500"
+      >Lewati ke konten utama</a
+    >
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

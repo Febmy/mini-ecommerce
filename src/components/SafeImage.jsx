@@ -1,28 +1,34 @@
-import React, { useState, useMemo } from 'react'
-
-const FALLBACK =
-  "data:image/svg+xml;utf8," +
-  encodeURIComponent(`
-  <svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'>
-    <rect width='100%' height='100%' fill='#f3f4f6'/>
-    <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
-          fill='#9ca3af' font-family='sans-serif' font-size='24'>
-      Image unavailable
-    </text>
-  </svg>`)
-
-export default function SafeImage({ src, alt = '', className = '', fallback = FALLBACK, ...rest }){
-  const [err, setErr] = useState(false)
-  const finalSrc = useMemo(() => (err ? fallback : src), [err, fallback, src])
+/* SafeImage: image helper untuk poin Performance & CLS
+ * - lazy load non-hero
+ * - decoding async
+ * - wajibkan width/height agar layout stabil
+ */
+export default function SafeImage({
+  src,
+  alt = "",
+  width,
+  height,
+  loading = "lazy",
+  decoding = "async",
+  className = "",
+  srcSet,
+  sizes,
+  fetchpriority, // gunakan 'high' hanya untuk LCP/hero
+  ...rest
+}) {
   return (
     <img
-      src={finalSrc}
+      src={src}
       alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      decoding={decoding}
       className={className}
-      loading="lazy"
-      referrerPolicy="no-referrer"
-      onError={() => setErr(true)}
+      srcSet={srcSet}
+      sizes={sizes}
+      fetchpriority={fetchpriority}
       {...rest}
     />
-  )
+  );
 }

@@ -85,7 +85,6 @@ export default function Users() {
                 </div>
                 <div className="text-sm text-gray-600 truncate">{u.email}</div>
                 <div className="mt-3">
-                  {/* NOTE: detail path in your repo is /user/:id (singular) */}
                   <Link
                     to={`/users/${u.id}`}
                     className="inline-block px-3 py-1.5 rounded-xl border text-sm hover:bg-gray-50"

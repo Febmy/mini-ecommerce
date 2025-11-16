@@ -1,11 +1,12 @@
-import React from "react";
+// src/main.jsx
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import App from "./App";
-import "./index.css";
+import App from "./App.jsx"; // pastikan ekstensi sesuai
+import "./index.css"; // pastikan path sesuai file CSS-mu
 
 createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <StrictMode>
     <BrowserRouter
       future={{
         v7_startTransition: true,
@@ -14,5 +15,5 @@ createRoot(document.getElementById("root")).render(
     >
       <App />
     </BrowserRouter>
-  </React.StrictMode>
+  </StrictMode>
 );

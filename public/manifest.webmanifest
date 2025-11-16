@@ -1,0 +1,8 @@
+{
+  "name": "Mini E-Commerce",
+  "short_name": "MiniShop",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0ea5e9",
+  "background_color": "#ffffff"
+}
